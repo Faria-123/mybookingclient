@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { HeroSlider } from "@/components/HeroSlider";
 import { HowItWorks } from "@/components/HowItWorks";
 import { TopCategories } from "@/components/TopCategories";
+import HomePageCard from "@/components/HomepageCard";
 
 export default function Home() {
   return (
@@ -11,8 +12,10 @@ export default function Home() {
       <Suspense fallback={<div className="min-h-[32rem] bg-[#050505]" />}>
         <HeroSlider />
       </Suspense>
+      <HomePageCard></HomePageCard>
       <HowItWorks />
       <TopCategories />
+
     </>
   );
 }

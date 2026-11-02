@@ -89,10 +89,13 @@ const BookCard = ({ book }) => {
                 </p>
 
                 {/* View Details */}
-                <Link
-                    href={`/allbooks/${book._id}`}
+                {/* <Link
+                    
                     className="block text-center w-full bg-[#00A8E8] hover:bg-[#0089bd] text-white font-semibold text-sm py-2.5 rounded-lg transition-colors"
                 >
+                    View Details
+                </Link> */}
+                <Link href={`/books/${book._id}`}>
                     View Details
                 </Link>
 

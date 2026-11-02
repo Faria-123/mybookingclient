@@ -13,7 +13,7 @@ const navLinks = [
     { href: "/", label: "Home", active: true },
     { href: "/books", label: "All Books", active: false },
     { href: "/addbooks", label: "Add Books", active: false },
-    { href: "/mybooks", label: "My Books", active: false },
+    { href: "/my-book", label: "My Books", active: false },
     { href: "/myborrow", label: "My Borrows", active: false },
 ];
 

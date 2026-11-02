@@ -36,6 +36,7 @@ export default function AddBooksPage() {
 
     const user = session?.user;
     const userId = user?.id;
+    const userEmail = user?.email;
     console.log("User ID:", userId);
     async function handleSubmit(event) {
         event.preventDefault();
@@ -52,6 +53,7 @@ export default function AddBooksPage() {
             image: String(fd.get("image") ?? "").trim(),
             description: String(fd.get("description") ?? "").trim(),
             userId: user?.id,
+            userEmail: user?.email,
 
         };
         console.log("Payload:", payload);

@@ -58,6 +58,7 @@
 // export default BookDetails;
 
 
+import BorrowButton from "@/components/BorrowButton";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -133,9 +134,9 @@ const BookDetails = async ({ params }) => {
                     </div>
 
                     {/* Borrow Button */}
-                    <button className="w-full bg-[#00A8E8] hover:bg-[#0089bd] text-white font-semibold py-3 rounded-xl transition-colors">
-                        Borrow This Book
-                    </button>
+                    {/* Borrow Button + Modal */}
+                    <BorrowButton book={book} />
+
 
                 </div>
             </div>

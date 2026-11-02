@@ -1,53 +1,68 @@
+
+
 "use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { User } from "lucide-react";
-import { cn } from "cn";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useSession, signOut } from "@/lib/auth-client";
+
 import {
     Avatar,
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar";
-// import { signOut } from "better-auth/api";
+
 const navLinks = [
-    { href: "/", label: "Home", active: true },
-    { href: "/books", label: "All Books", active: false },
-    { href: "/addbooks", label: "Add Books", active: false },
-    { href: "/my-book", label: "My Books", active: false },
-    { href: "/myborrows", label: "My Borrows", active: false },
+    { href: "/", label: "Home" },
+    { href: "/books", label: "All Books" },
+    { href: "/addbooks", label: "Add Books" },
+    { href: "/my-book", label: "My Books" },
+    { href: "/myborrows", label: "My Borrows" },
 ];
 
 export function Navbar() {
-    const { data: session, isPending, error } = useSession();
+    const { data: session, isPending } = useSession();
     const user = session?.user;
-    console.log(user);
+
+    const pathname = usePathname();
+    const [menuOpen, setMenuOpen] = useState(false);
+
     const handleSignOut = async () => {
         await signOut();
-    }
-    return (
-        <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
-            <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+        setMenuOpen(false);
+    };
 
-                {/* Left: Logo */}
+    const getLinkClass = (href) =>
+        cn(
+            "text-sm transition-colors hover:text-[#00A8E8]",
+            pathname === href
+                ? "font-semibold text-[#00A8E8]"
+                : "text-foreground"
+        );
+
+    return (
+        <header className="sticky top-0 z-50 w-full border-b bg-background">
+            <nav className="relative mx-auto flex min-h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+
+                {/* Logo */}
                 <Link
                     href="/"
                     className="shrink-0 text-2xl font-bold tracking-tight text-[#00A8E8]"
+                    onClick={() => setMenuOpen(false)}
                 >
                     BOOKNOOK
                 </Link>
 
-                {/* Center: Navigation links */}
-                <ul className="flex items-center gap-7">
+                {/* Desktop Navigation */}
+                <ul className="hidden lg:flex items-center gap-6 xl:gap-7">
                     {navLinks.map((link) => (
                         <li key={link.href}>
                             <Link
                                 href={link.href}
-                                className={cn(
-                                    "text-sm transition-colors hover:text-[#00A8E8]",
-                                    link.active
-                                        ? "border-b-2 border-[#00A8E8] pb-0.5 font-medium text-[#00A8E8]"
-                                        : "text-foreground"
-                                )}
+                                className={getLinkClass(link.href)}
                             >
                                 {link.label}
                             </Link>
@@ -55,47 +70,135 @@ export function Navbar() {
                     ))}
                 </ul>
 
-                {/* Right: Account links */}
-                <div className="flex items-center gap-6">
-                    {
-                        user ? <div className="flex items-center gap-3">
-
+                {/* Desktop Account */}
+                <div className="hidden lg:flex items-center gap-4">
+                    {isPending ? (
+                        <span className="text-sm text-muted-foreground">
+                            Loading...
+                        </span>
+                    ) : user ? (
+                        <div className="flex items-center gap-3">
                             <Avatar>
                                 <AvatarImage
-                                    src={user?.image}
-                                    alt="@shadcn"
-                                    className="grayscale"
+                                    src={user.image || ""}
+                                    alt={user.name || "User"}
                                 />
-                                <AvatarFallback>{user?.name?.split(" ").map((n) => n[0]).join("")}</AvatarFallback>
+                                <AvatarFallback>
+                                    {user.name
+                                        ?.split(" ")
+                                        .map((n) => n[0])
+                                        .join("")
+                                        .toUpperCase()}
+                                </AvatarFallback>
                             </Avatar>
+
                             <button
                                 onClick={handleSignOut}
-                                className="btn btn-error btn-sm ml-auto"
+                                className="btn btn-error btn-sm"
                             >
                                 Sign Out
                             </button>
-
-                        </div> : <>
+                        </div>
+                    ) : (
+                        <>
                             <Link
                                 href="/signin"
-                                className="text-sm text-foreground transition-colors hover:text-[#00A8E8]"
+                                className="text-sm hover:text-[#00A8E8]"
                             >
                                 Login
                             </Link>
 
                             <Link
                                 href="/signup"
-                                className="text-sm text-foreground transition-colors hover:text-[#00A8E8]"
+                                className="rounded-md bg-[#00A8E8] px-4 py-2 text-sm font-medium text-white hover:bg-sky-600 transition"
                             >
                                 Sign Up
                             </Link>
                         </>
-                    }
-
-
+                    )}
                 </div>
 
+                {/* Mobile Menu Button */}
+                <button
+                    onClick={() => setMenuOpen(!menuOpen)}
+                    className="lg:hidden rounded-md p-2 hover:bg-muted"
+                    aria-label={menuOpen ? "Close menu" : "Open menu"}
+                    aria-expanded={menuOpen}
+                >
+                    {menuOpen ? (
+                        <X className="h-6 w-6" />
+                    ) : (
+                        <Menu className="h-6 w-6" />
+                    )}
+                </button>
             </nav>
+
+            {/* Mobile Dropdown */}
+            {menuOpen && (
+                <div className="lg:hidden border-t bg-background px-5 py-5 shadow-md">
+                    <ul className="flex flex-col gap-5">
+                        {navLinks.map((link) => (
+                            <li key={link.href}>
+                                <Link
+                                    href={link.href}
+                                    onClick={() => setMenuOpen(false)}
+                                    className={getLinkClass(link.href)}
+                                >
+                                    {link.label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <div className="mt-6 border-t pt-5">
+                        {isPending ? (
+                            <p className="text-sm text-muted-foreground">
+                                Loading...
+                            </p>
+                        ) : user ? (
+                            <div className="flex items-center justify-between gap-3">
+                                <div className="flex items-center gap-3 min-w-0">
+                                    <Avatar>
+                                        <AvatarImage src={user.image || ""} />
+                                        <AvatarFallback>
+                                            {user.name?.[0]?.toUpperCase() || "U"}
+                                        </AvatarFallback>
+                                    </Avatar>
+
+                                    <span className="truncate text-sm font-medium">
+                                        {user.name}
+                                    </span>
+                                </div>
+
+                                <button
+                                    onClick={handleSignOut}
+                                    className="btn btn-error btn-sm shrink-0"
+                                >
+                                    Sign Out
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="flex items-center gap-5">
+                                <Link
+                                    href="/signin"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="text-sm hover:text-[#00A8E8]"
+                                >
+                                    Login
+                                </Link>
+
+                                <Link
+                                    href="/signup"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="rounded-md bg-[#00A8E8] px-4 py-2 text-sm text-white"
+                                >
+                                    Sign Up
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
         </header>
     );
 }

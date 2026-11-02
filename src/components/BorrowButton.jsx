@@ -83,15 +83,29 @@ export default function BorrowButton({ book }) {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Button
-                    className="w-full bg-[#00A8E8] text-white hover:bg-[#0089bd]"
+
+            {/* <DialogTrigger asChild>
+                <button
+                    type="button"
                     disabled={isPending}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#00A8E8] px-4 py-2 text-sm font-medium text-white hover:bg-[#0089bd] disabled:opacity-50"
                 >
                     <BookOpen className="size-4" />
                     Borrow This Book
-                </Button>
-            </DialogTrigger>
+                </button>
+            </DialogTrigger> */}
+            <DialogTrigger
+                render={
+                    <button
+                        type="button"
+                        disabled={isPending}
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#00A8E8] px-4 py-2 text-sm font-medium text-white hover:bg-[#0089bd] disabled:opacity-50"
+                    >
+                        <BookOpen className="size-4" />
+                        Borrow This Book
+                    </button>
+                }
+            />
 
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
@@ -141,6 +155,8 @@ export default function BorrowButton({ book }) {
                         )}
                         {submitting ? "Confirming..." : "Confirm Borrow"}
                     </Button>
+
+
                 </div>
             </DialogContent>
         </Dialog>

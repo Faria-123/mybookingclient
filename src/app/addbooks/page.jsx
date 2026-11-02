@@ -52,6 +52,9 @@ export default function AddBooksPage() {
             category: String(fd.get("category") ?? ""),
             image: String(fd.get("image") ?? "").trim(),
             description: String(fd.get("description") ?? "").trim(),
+
+            totalCopies: Number(fd.get("totalCopies")),
+            availableCopies: Number(fd.get("totalCopies")),
             userId: user?.id,
             userEmail: user?.email,
 
@@ -198,6 +201,23 @@ export default function AddBooksPage() {
                                 id="description"
                                 name="description"
                                 placeholder="A one-paragraph summary of the book…"
+                                required
+                            />
+                        </div>
+
+                        {/* Total Copies */}
+                        <div className="grid gap-2">
+                            <Label htmlFor="totalCopies">
+                                Total Copies
+                            </Label>
+
+                            <Input
+                                id="totalCopies"
+                                name="totalCopies"
+                                type="number"
+                                min="1"
+                                step="1"
+                                placeholder="Enter total copies"
                                 required
                             />
                         </div>

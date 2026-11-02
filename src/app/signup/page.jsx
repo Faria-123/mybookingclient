@@ -230,7 +230,7 @@ export default function RegisterPage() {
 
                 form.reset();
 
-                router.push("/login");
+                router.push("/");
             }
 
         } catch (error) {

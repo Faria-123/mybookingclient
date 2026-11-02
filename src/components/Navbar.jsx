@@ -1,8 +1,14 @@
-
+"use client";
 import Link from "next/link";
 import { User } from "lucide-react";
 import { cn } from "cn";
-
+import { useSession, signOut } from "@/lib/auth-client";
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@/components/ui/avatar";
+// import { signOut } from "better-auth/api";
 const navLinks = [
     { href: "/", label: "Home", active: true },
     { href: "/books", label: "All Books", active: false },
@@ -12,6 +18,12 @@ const navLinks = [
 ];
 
 export function Navbar() {
+    const { data: session, isPending, error } = useSession();
+    const user = session?.user;
+    console.log(user);
+    const handleSignOut = async () => {
+        await signOut();
+    }
     return (
         <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
             <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
@@ -45,27 +57,42 @@ export function Navbar() {
 
                 {/* Right: Account links */}
                 <div className="flex items-center gap-6">
-                    <Link
-                        href="/profile"
-                        className="flex items-center gap-1.5 text-sm text-foreground transition-colors hover:text-[#00A8E8]"
-                    >
-                        <User className="size-4" />
-                        Profile
-                    </Link>
+                    {
+                        user ? <div className="flex items-center gap-3">
 
-                    <Link
-                        href="/login"
-                        className="text-sm text-foreground transition-colors hover:text-[#00A8E8]"
-                    >
-                        Login
-                    </Link>
+                            <Avatar>
+                                <AvatarImage
+                                    src={user?.image}
+                                    alt="@shadcn"
+                                    className="grayscale"
+                                />
+                                <AvatarFallback>{user?.name?.split(" ").map((n) => n[0]).join("")}</AvatarFallback>
+                            </Avatar>
+                            <button
+                                onClick={handleSignOut}
+                                className="btn btn-error btn-sm ml-auto"
+                            >
+                                Sign Out
+                            </button>
 
-                    <Link
-                        href="/signup"
-                        className="text-sm text-foreground transition-colors hover:text-[#00A8E8]"
-                    >
-                        Sign Up
-                    </Link>
+                        </div> : <>
+                            <Link
+                                href="/signin"
+                                className="text-sm text-foreground transition-colors hover:text-[#00A8E8]"
+                            >
+                                Login
+                            </Link>
+
+                            <Link
+                                href="/signup"
+                                className="text-sm text-foreground transition-colors hover:text-[#00A8E8]"
+                            >
+                                Sign Up
+                            </Link>
+                        </>
+                    }
+
+
                 </div>
 
             </nav>

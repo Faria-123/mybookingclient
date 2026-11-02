@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/toast";
 
 import { useRouter } from "next/navigation";
+import { useSession } from "@/lib/auth-client";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -31,7 +32,11 @@ const CATEGORIES = ["Fiction", "Science", "History", "Kids", "Others"];
 export default function AddBooksPage() {
     const router = useRouter();
     const [submitting, setSubmitting] = useState(false);
+    const { data: session } = useSession();
 
+    const user = session?.user;
+    const userId = user?.id;
+    console.log("User ID:", userId);
     async function handleSubmit(event) {
         event.preventDefault();
 
@@ -46,8 +51,10 @@ export default function AddBooksPage() {
             category: String(fd.get("category") ?? ""),
             image: String(fd.get("image") ?? "").trim(),
             description: String(fd.get("description") ?? "").trim(),
-        };
+            userId: user?.id,
 
+        };
+        console.log("Payload:", payload);
         setSubmitting(true);
 
         try {

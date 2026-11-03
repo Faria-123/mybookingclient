@@ -22,7 +22,6 @@ const formatDate = (date) => {
     });
 };
 
-// Fallback return date for older borrow records
 const getReturnDate = (borrow) => {
     if (borrow.returnDate) {
         return formatDate(borrow.returnDate);

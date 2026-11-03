@@ -1,6 +1,5 @@
 
 
-
 import BookCard from "@/components/BookCard";
 
 const Page = async () => {

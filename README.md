@@ -37,7 +37,7 @@ BookNook is a small online library website where users can explore books, add bo
 
 2. Navigate to the project folder:
 
-   ```bash
+   ```bash 
    cd booknook
    ```
 

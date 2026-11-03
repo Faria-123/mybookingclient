@@ -24,7 +24,7 @@ const MyBooks = async () => {
     })
 
     const res = await fetch(
-        `http://localhost:8000/allbook/${encodeURIComponent(user.email)}`, {
+        `${process.env.NEXT_PUBLIC_API_URL}/allbook/${encodeURIComponent(user.email)}`, {
         headers: {
             authorization: `Bearer ${jwtToken?.token}`,
         }

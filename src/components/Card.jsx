@@ -97,7 +97,7 @@ const Card = ({ book }) => {
 
         try {
             const res = await fetch(
-                `http://localhost:8000/allbook/details/${book._id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/allbook/details/${book._id}`,
                 {
                     method: "DELETE",
                 }

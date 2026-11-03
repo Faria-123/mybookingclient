@@ -25,7 +25,7 @@ import { toast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
 import { authClient, useSession } from "@/lib/auth-client";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const CATEGORIES = ["Fiction", "Science", "History", "Kids", "Others"];
 

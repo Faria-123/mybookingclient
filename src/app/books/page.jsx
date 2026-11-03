@@ -4,7 +4,7 @@
 import BookCard from "@/components/BookCard";
 
 const Page = async () => {
-    const res = await fetch("http://127.0.0.1:8000/allbook", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/allbook`, {
         cache: "no-store",
     });
 

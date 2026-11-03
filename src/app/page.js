@@ -12,7 +12,7 @@ export default function Home() {
       <Suspense fallback={<div className="min-h-[32rem] bg-[#050505]" />}>
         <HeroSlider />
       </Suspense>
-      {/* <HomePageCard></HomePageCard> */}
+
 
       <Suspense fallback={<p>Loading books...</p>}>
         <HomePageCard />

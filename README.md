@@ -26,7 +26,7 @@ BookNook is a small online library website where users can explore books, add bo
 - Express.js
 - MongoDB
 - Better Auth
-
+- JWT
 ## Installation
 
 1. Clone the repository:

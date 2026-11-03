@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import { Loader2, BookOpen, RotateCcw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,7 @@ export default function MyBorrowsPage() {
 
     const user = session?.user;
 
+
     // Fetch logged-in user's borrowed books
     useEffect(() => {
         if (isPending) return;
@@ -56,7 +57,6 @@ export default function MyBorrowsPage() {
         const fetchBorrows = async () => {
             try {
                 setLoading(true);
-
                 const res = await fetch(
                     `${API_URL}/my-borrows/${user.id}`
                 );

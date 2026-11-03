@@ -1,28 +1,4 @@
-// // import React from 'react';
 
-// import Card from "@/components/Card";
-// import { auth } from "@/lib/auth";
-// import { headers } from "next/headers";
-
-// const page = async () => {
-//     const session = await auth.api.getSession({
-//         headers: await headers(),
-//     });
-//     const user = session?.user;
-//     const email = user?.email;
-//     const res = await fetch(`http://localhost:8000/allbook/${email}`);
-//     const data = await res.json();
-//     console.log(data);
-//     return (
-//         <div>
-//             {
-//                 data.map((book) => <Card book={book} key={book._id}></Card>)
-//             }
-//         </div>
-//     );
-// };
-
-// export default page; 
 
 import Card from "@/components/Card";
 import { auth } from "@/lib/auth";
@@ -43,9 +19,16 @@ const MyBooks = async () => {
     if (!user) {
         redirect("/login");
     }
+    const jwtToken = await auth.api.getToken({
+        headers: await headers()
+    })
 
     const res = await fetch(
-        `http://localhost:8000/allbook/${encodeURIComponent(user.email)}`,
+        `http://localhost:8000/allbook/${encodeURIComponent(user.email)}`, {
+        headers: {
+            authorization: `Bearer ${jwtToken?.token}`,
+        }
+    },
         { cache: "no-store" }
     );
 
